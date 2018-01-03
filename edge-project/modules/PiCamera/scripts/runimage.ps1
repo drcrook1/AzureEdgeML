@@ -1,0 +1,1 @@
+docker run --name picamera -t picamera

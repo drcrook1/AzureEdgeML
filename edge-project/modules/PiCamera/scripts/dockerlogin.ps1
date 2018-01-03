@@ -1,0 +1,1 @@
+docker login iotml.azurecr.io -u iotml -p 3FjFUQK51wT/3TRXbHPjEmruCkGUUkFc
