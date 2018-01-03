@@ -1,0 +1,1 @@
+Modules that get deployed onto physical gateway or edge devices
