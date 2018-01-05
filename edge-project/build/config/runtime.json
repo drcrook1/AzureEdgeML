@@ -1,7 +1,7 @@
 {
     "deployment": {
       "docker": {
-        "edgeRuntimeImage": "${CONTAINER_REGISTRY_SERVER}/azureiotedge-agent:${RUNTIME_TAG}", 
+        "edgeRuntimeImage": "iotml.azurecr.io/azureiotedge-agent:1.0-preview", 
         "loggingOptions": {
           "log-driver": "json-file", 
           "log-opts": {
@@ -10,18 +10,18 @@
         }, 
         "registries": [
           {
-            "address": "${CONTAINER_REGISTRY_SERVER}", 
-            "password": "${CONTAINER_REGISTRY_PASSWORD}", 
-            "username": "${CONTAINER_REGISTRY_USERNAME}"
+            "address": "iotml.azurecr.io", 
+            "password": "3FjFUQK51wT/3TRXbHPjEmruCkGUUkFc", 
+            "username": "iotml"
           }
         ], 
         "uri": "unix:///var/run/docker.sock"
       }, 
       "type": "docker"
     }, 
-    "deviceConnectionString": "${DEVICE_CONNECTION_STRING}", 
-    "homeDir": "${RUNTIME_HOME_DIR}", 
-    "hostName": "${RUNTIME_HOST_NAME}", 
+    "deviceConnectionString": "HostName=iotml.azure-devices.net;DeviceId=camera-1;SharedAccessKey=2Dtt52Rvs7pzZxmV5jRAo6x5AQWEIyF5o7LWxXahEx8=", 
+    "homeDir": "/etc/azure-iot-edge", 
+    "hostName": "campi", 
     "logLevel": "info", 
     "schemaVersion": "1", 
     "security": {
