@@ -1,0 +1,5 @@
+{
+    "HostConfig": {
+        "privileged":true
+    }
+}

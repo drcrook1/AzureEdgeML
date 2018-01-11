@@ -1,6 +1,16 @@
-FROM node
+FROM resin/rpi-raspbian:jessie
+
+RUN apt-get update -y
+RUN apt-get upgrade -y
+RUN apt-get install -y wget
+RUN usermod -a -G video root
 
 WORKDIR /usr/src/app
+
+RUN wget http://node-arm.herokuapp.com/node_latest_armhf.deb 
+RUN sudo dpkg -i node_latest_armhf.deb
+
+RUN modprobe bcm2835-v4l2
 
 COPY package*.json ./
 RUN npm install

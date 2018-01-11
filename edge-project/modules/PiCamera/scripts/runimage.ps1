@@ -1,1 +1,1 @@
-docker run --name picamera -t picamera
+docker run --privileged --name picamera -t picamera

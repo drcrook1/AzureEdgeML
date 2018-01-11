@@ -1,0 +1,1 @@
+sudo iotedgectl setup --docker-registries iotml.azurecr.io iotml 3FjFUQK51wT/3TRXbHPjEmruCkGUUkFc --connection-string "HostName=iotml.azure-devices.net;DeviceId=camera-1;SharedAccessKey=2Dtt52Rvs7pzZxmV5jRAo6x5AQWEIyF5o7LWxXahEx8=" --auto-cert-gen-force-no-passwords
