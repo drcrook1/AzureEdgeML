@@ -3,6 +3,7 @@ FROM resin/rpi-raspbian:jessie
 RUN apt-get update -y
 RUN apt-get upgrade -y
 RUN apt-get install -y wget
+RUN apt-get install libraspberrypi-bin -y
 RUN usermod -a -G video root
 
 WORKDIR /usr/src/app
@@ -10,11 +11,9 @@ WORKDIR /usr/src/app
 RUN wget http://node-arm.herokuapp.com/node_latest_armhf.deb 
 RUN sudo dpkg -i node_latest_armhf.deb
 
-RUN modprobe bcm2835-v4l2
-
 COPY package*.json ./
 RUN npm install
 
 COPY . .
 
-CMD ["node", "index.js"]
+CMD ["node", "app.js"]
