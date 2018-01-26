@@ -6,7 +6,8 @@
 
 from azure.storage.blob import BlockBlobService
 import os
-
+from scipy import misc
+import imageio
 
 base_dir = 'C:/Users/DrCrook/Documents/AzureML/ClassifyOfficeItems/images/'
 account = 'iotmlreceiving'
@@ -21,12 +22,15 @@ for dirName, subDirList, files in os.walk(base_dir):
     
     #Upload images to appropriate container
     for file in files:
-        cont = dirName.split('/')[-1]  
+        cont = dirName.split('/')[-1]
+        full_path = dirName + '/' + file
+        print(full_path)
+        image = misc.imread(full_path)
+        os.remove(full_path)
+        imageio.imwrite(full_path[0:-4] + '.jpg', image)
         bbs.create_blob_from_path(
             cont,
             file.replace(' ', ''),
             dirName + '/' + file
         )
-        print(file)
-        print(dirName)
 

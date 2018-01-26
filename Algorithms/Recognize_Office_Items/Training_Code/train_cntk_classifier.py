@@ -18,18 +18,20 @@ IMAGE_HEIGHT = 224
 IMAGE_WIDTH = 224
 IN_SHAPE = (3, IMAGE_WIDTH, IMAGE_HEIGHT)
 
-MINIBATCH_SIZE = 50
-EPOCH_SIZE = 120
-MAX_DATA_PASSES = 100
-LOG_FREQ = 10
-TEST_SAMPLES = 120
+MINIBATCH_SIZE = 200
+EPOCH_SIZE = 200
+LOG_FREQ = 50
+TEST_SAMPLES = 200
 
 #DATA LOCATION PARAMS
 DOWNLOAD_DIR = 'C:/data/Office_Supplies/'
 MAP_FILE_PATH = DOWNLOAD_DIR + 'mapfile.txt'
-CLASS_MAPPING_FILE = DOWNLOAD_DIR + 'class_mapping.pkl'
 BLOB_ACCOUNT = 'iotmlreceiving'
 BLOB_KEY = 'Rg/wEKqkhPAso5FqvgtAQrYBP0dTFcYQc35LhZRvNBEUQE8y7HXf+MAd9rUrk2lSR4eqSZULOAvDZ1YFItg4RA=='
+
+PERSISTENCE_BASE_DIR = './SavedModel/'
+MODEL_NAME = 'simple'
+CLASS_MAPPING_FILE = PERSISTENCE_BASE_DIR + 'class_mapping.pkl'
 
 #Global variables that change
 NUM_OUTPUTS = 7
@@ -53,6 +55,8 @@ def download_and_prep_data():
                     dest
                 )
                 file.write(dest + '\t' + str(classes.index(cont.name)) + '\n')
+    if not os.path.exists(PERSISTENCE_BASE_DIR):
+        os.makedirs(PERSISTENCE_BASE_DIR)
     with open(CLASS_MAPPING_FILE, 'wb') as p_file:
         pickle.dump(classes, p_file)
     global NUM_OUTPUTS 
@@ -118,7 +122,7 @@ def print_training_progress(trainer, mb, frequency, verbose=1):
 def train_test(train_reader, test_reader, num_sweeps = 10):
     loss, label_error = create_criterion(model, y)
     # Instantiate the trainer object to drive the model training
-    learning_rate = [0.01]*100 + [0.001]*100 + [0.0001]
+    learning_rate = [0.01]*500 + [0.001]*100 + [0.0001]
     lr_schedule = C.learning_rate_schedule(learning_rate, C.UnitType.minibatch)
     learner = C.sgd(model.parameters, lr_schedule)
     trainer = C.Trainer(model, (loss, label_error), [learner])
@@ -169,4 +173,8 @@ print('attempting train')
 train_reader = create_minibatch_source(MAP_FILE_PATH, True, NUM_OUTPUTS)
 test_reader = create_minibatch_source(MAP_FILE_PATH, True, NUM_OUTPUTS)
 
-train_test(train_reader, test_reader, num_sweeps = 100)
+train_test(train_reader, test_reader, num_sweeps = 2000)
+
+inf_model = C.softmax(model)
+inf_model.save(PERSISTENCE_BASE_DIR + MODEL_NAME + '.dnn')
+
