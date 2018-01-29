@@ -18,10 +18,11 @@ IMAGE_HEIGHT = 224
 IMAGE_WIDTH = 224
 IN_SHAPE = (3, IMAGE_WIDTH, IMAGE_HEIGHT)
 
-MINIBATCH_SIZE = 200
-EPOCH_SIZE = 200
+MINIBATCH_SIZE = 200    # Number of input samples
+EPOCH_SIZE = 200       # Full data set size, or virtual concept there of
 LOG_FREQ = 50
-TEST_SAMPLES = 200
+TEST_SAMPLES = 200      # Number of test samples in full test set
+LEARNING_RATE = [0.01]*500 + [0.001]*100 + [0.0001]
 
 #DATA LOCATION PARAMS
 DOWNLOAD_DIR = 'C:/data/Office_Supplies/'
@@ -103,11 +104,6 @@ def create_criterion(model, labels):
     error = C.classification_error(model, labels)
     return loss, error
 
-def moving_average(a, w=5):
-    if len(a) < w:
-        return a[:]    # Need to send a copy of the array
-    return [val if idx < w else sum(a[(idx-w):idx])/w for idx, val in enumerate(a)]
-
 def print_training_progress(trainer, mb, frequency, verbose=1):
     training_loss = "NA"
     eval_error = "NA"
@@ -122,8 +118,7 @@ def print_training_progress(trainer, mb, frequency, verbose=1):
 def train_test(train_reader, test_reader, num_sweeps = 10):
     loss, label_error = create_criterion(model, y)
     # Instantiate the trainer object to drive the model training
-    learning_rate = [0.01]*500 + [0.001]*100 + [0.0001]
-    lr_schedule = C.learning_rate_schedule(learning_rate, C.UnitType.minibatch)
+    lr_schedule = C.learning_rate_schedule(LEARNING_RATE, C.UnitType.minibatch)
     learner = C.sgd(model.parameters, lr_schedule)
     trainer = C.Trainer(model, (loss, label_error), [learner])
 
