@@ -1,0 +1,1 @@
+az ml service create realtime --model-file ./assets/simple.dnn -d ./assets/ -f score.py -r python -n imageclassifymodule
